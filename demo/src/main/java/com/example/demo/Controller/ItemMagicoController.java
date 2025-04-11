@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/itens-magicos")
+@RequestMapping("/itensMagicos")
 public class ItemMagicoController {
+
     private ItemMagicoService itemMagicoService;
 
     public ItemMagicoController(ItemMagicoService service) {
