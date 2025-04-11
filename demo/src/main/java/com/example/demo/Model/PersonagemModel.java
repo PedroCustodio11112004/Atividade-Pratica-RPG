@@ -1,2 +1,5 @@
-package com.example.demo.Model;public class PersonagemModel {
+package com.example.demo.Model;
+
+public class PersonagemModel {
+
 }

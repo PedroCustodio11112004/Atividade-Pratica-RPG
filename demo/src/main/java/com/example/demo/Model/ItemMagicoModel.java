@@ -1,2 +1,4 @@
-package com.example.demo.Model;public class ItemMagicoModel {
+package com.example.demo.Model;
+
+public class ItemMagicoModel {
 }
