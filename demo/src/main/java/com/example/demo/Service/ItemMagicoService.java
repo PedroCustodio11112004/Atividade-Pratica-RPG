@@ -1,32 +1,51 @@
 package com.example.demo.Service;
 
+import com.example.demo.DTO.ItemMagicoRequest;
+import com.example.demo.DTO.ItemMagicoResponse;
 import com.example.demo.Model.ItemMagicoModel;
 import com.example.demo.Repository.ItemMagicoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemMagicoService {
-
-    private ItemMagicoRepository itemMagicoRepository;
+    private final ItemMagicoRepository itemMagicoRepository;
 
     public ItemMagicoService(ItemMagicoRepository itemMagicoRepository) {
         this.itemMagicoRepository = itemMagicoRepository;
     }
 
-    public List<ItemMagicoModel> getAllItensMagicos() {
-        return itemMagicoRepository.findAll();
+    public ItemMagicoResponse createItemMagico(ItemMagicoRequest request) {
+        ItemMagicoModel item = new ItemMagicoModel();
+        item.setNome(request.getNome());
+        item.setTipo(request.getTipo());
+        item.setAtributos(request.getForca(), request.getDefesa());
+        ItemMagicoModel saved = itemMagicoRepository.save(item);
+        return toResponse(saved);
     }
 
-    public ItemMagicoModel getItensMagicoById(long id) {
-        return itemMagicoRepository.findById(id).orElse(null);
+    public List<ItemMagicoResponse> getAllItensMagicos() {
+        return itemMagicoRepository.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public ItemMagicoModel createItensMagico(ItemMagicoModel itemMagicoModel) {
-        return itemMagicoRepository.save(itemMagicoModel);
+    public ItemMagicoResponse getItemMagicoById(Long id) {
+        ItemMagicoModel item = itemMagicoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item não encontrado"));
+        return toResponse(item);
     }
 
-
+    private ItemMagicoResponse toResponse(ItemMagicoModel model) {
+        ItemMagicoResponse itemMagicoresponse = new ItemMagicoResponse();
+        itemMagicoresponse.setId(model.getId());
+        itemMagicoresponse.setNome(model.getNome());
+        itemMagicoresponse.setTipo(model.getTipo());
+        itemMagicoresponse.setForca(model.getForca());
+        itemMagicoresponse.setDefesa(model.getDefesa());
+        itemMagicoresponse.setPersonagemId(model.getPersonagem() != null ? model.getPersonagem().getId() : null);
+        return itemMagicoresponse;
+    }
 }

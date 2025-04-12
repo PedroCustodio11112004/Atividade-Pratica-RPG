@@ -7,24 +7,23 @@ import java.util.List;
 @Entity
 public class PersonagemModel {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
     private String nomeAventureiro;
-
     @Enumerated(EnumType.STRING)
     private ClassePersonagem classe;
-
     private int level;
     private int forcaBase;
     private int defesaBase;
-
     @OneToMany(mappedBy = "personagem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemMagicoModel> itensMagicos = new ArrayList<>();
 
     public PersonagemModel() {}
+
 
     public Long getId() {
         return id;
@@ -84,8 +83,9 @@ public class PersonagemModel {
 
     public void setAtributosBase(int forca, int defesa) {
         if (forca + defesa != 10 || forca < 0 || defesa < 0) {
-            throw new IllegalArgumentException("Força e Defesa devem somar exatamente 10 pontos.");
+            throw new IllegalArgumentException("Força e Defesa devem somar exatamente 10 pontos");
         }
+
         this.forcaBase = forca;
         this.defesaBase = defesa;
     }
@@ -101,8 +101,9 @@ public class PersonagemModel {
     public void adicionarItem(ItemMagicoModel item) {
         if (item.getTipo() == TipoItem.Amuleto) {
             long amuletoCount = itensMagicos.stream().filter(i -> i.getTipo() == TipoItem.Amuleto).count();
+
             if (amuletoCount >= 1) {
-                throw new IllegalStateException("Só pode ter 1 Amuleto.");
+                throw new IllegalStateException("Pode ter 1 Amuleto");
             }
         }
         item.setPersonagem(this);

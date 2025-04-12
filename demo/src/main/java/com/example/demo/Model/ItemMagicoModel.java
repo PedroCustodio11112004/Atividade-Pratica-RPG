@@ -8,12 +8,10 @@ public class ItemMagicoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String nome;
-
     @Enumerated(EnumType.STRING)
-    private TipoItem tipo;
 
+    private TipoItem tipo;
     private int forca;
     private int defesa;
 
@@ -58,6 +56,7 @@ public class ItemMagicoModel {
     public PersonagemModel getPersonagem() {
         return personagem;
     }
+
     public void setPersonagem(PersonagemModel personagem) {
         this.personagem = personagem;
     }
@@ -66,15 +65,19 @@ public class ItemMagicoModel {
         if (forca < 0 || defesa < 0 || (forca == 0 && defesa == 0)) {
             throw new IllegalArgumentException("Força e Defesa não podem ser 0");
         }
+
         if (forca > 10 || defesa > 10) {
             throw new IllegalArgumentException("Força e Defesa não podem passar de 10");
         }
+
         if (tipo == TipoItem.Arma && defesa != 0) {
-            throw new IllegalArgumentException("Arma deve ter Defesa 0");
+            throw new IllegalArgumentException("Armas devem ter Defesa = 0");
         }
+
         if (tipo == TipoItem.Armadura && forca != 0) {
-            throw new IllegalArgumentException("Armadura deve ter Força 0");
+            throw new IllegalArgumentException("Armaduras devem ter Força = 0");
         }
+
         this.forca = forca;
         this.defesa = defesa;
     }
